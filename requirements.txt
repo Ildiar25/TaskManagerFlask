@@ -1,0 +1,2 @@
+SQLAlchemy~=2.0.35
+Flask~=3.0.3

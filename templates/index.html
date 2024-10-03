@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestor de Tareas</title>
+
+    <!-- Sets the page icon -->
+    <link rel="icon" type="image/x-icon" href="static/reminder-icon.ico">
+    <!-- Own CSS file -->
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+
+    <!-- This link loads an external CSS from Bootstrap Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/slate/bootstrap.min.css" integrity="sha384-8iuq0iaMHpnH2vSyvZMSIqQuUnQA7QM+f6srIdlgBrTSEyd//AWNMyEaSF2yPzNQ" crossorigin="anonymous">
+
+    <!-- This config loads a Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Official HTML tutorial: https://www.w3schools.com/html/ -->
+
+    <!-- The 'container p-4' divides the entire page in four columns as we can see at https://getbootstrap.com/docs/5.3/layout/grid/ -->
+    <!-- For notation documentation, visits https://getbootstrap.com/docs/5.3/utilities/spacing/ -->
+    <main class="container p-4">
+        <h1 class="text-center mt-4 ubuntu-bold">Gestor de Tareas</h1>
+        <h6 class="text-center ubuntu-light-italic text-dark">utilizando Python</h6>
+        <p class="text-center mt-6">
+            ¡Introduce la tarea que quieras y dale al botón <b><i>Guardar</i></b>!
+        </p>
+
+        <div class="row">
+            <div class="col-md-4 offset-md-4 my-auto">
+
+                <!-- The next label creates a card on our web page -->
+                <div class="card border-warning mb-4 center-position card_style">
+                    <div class="card-header">
+
+                        <!-- The next label is a 'form' label. It is necessary to allow access to all data from user inputs: -->
+                        <!--  · 'action': Route name posted on python file -->
+                        <!--  · 'method': HTTP method (post because this form sends data) -->
+                        <form action="/create-task" method="post">
+                            <div class="form-group">
+
+                                <!-- The next label allows to introduce data:  -->
+                                <!--  · 'name': the variable name to back-end -->
+                                <!--  · 'autofocus': the cursor selects the field automaticly -->
+                                <!--  · 'required': the field must be filled before submit -->
+                                <input type="text" name="task_content" class="form-control more_margin" placeholder="Nota nueva..." id="inputDefault" autofocus required>
+
+                                <!-- The next label create a dropdown button with different options -->
+                                <!--  · 'name': the variable name to back-end -->
+                                <select name="category" class="form-select form-select-sm dropdown_style" id="categories">
+                                    <option>Urgente</option>
+                                    <option>Trabajo</option>
+                                    <option>Estudios</option>
+                                    <option>Hogar</option>
+                                    <option>Tiempo libre</option>
+                                </select>
+                            </div>
+                            <div class="position-relative">
+                                <!-- The next label allows to create a button: -->
+                                <!--  · 'Submit': Send all form data to the back-end -->
+                                <button type="submit" class="btn btn-sm btn-warning button_style">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Tareas guardadas:</h4>
+                        <ul class="list-group">
+                            <!-- NOTICE: 'Jinja' only allows to use loops or conditionals. -->
+                            {% for task in all_assigments %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="task_display {% if task.complete == true %} task_complete {% endif %}">
+                                    <span>
+
+                                        <!-- Reports the user if task exceeds a given time: -->
+                                        <!--  · Appears an info red image -->
+                                        <svg class="{% if today - task.created >= due_time %} red_color {% endif %}" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="transparent"><path d="M479.73-279.87q18.14 0 30.67-12.27 12.53-12.26 12.53-30.4 0-18.13-12.26-30.79-12.27-12.65-30.4-12.65-18.14 0-30.67 12.44-12.53 12.44-12.53 30.58 0 18.13 12.26 30.61 12.27 12.48 30.4 12.48Zm.06-151.65q17.36 0 29.54-12.03 12.17-12.02 12.17-29.47v-162.5q0-17.45-11.96-29.48-11.97-12.02-29.33-12.02T450.67-665q-12.17 12.03-12.17 29.48v162.5q0 17.45 11.96 29.47 11.97 12.03 29.33 12.03Zm.49 343.65q-81.19 0-152.62-30.62-71.44-30.62-125-84.17-53.55-53.56-84.17-124.95Q87.87-399 87.87-480.46q0-81.45 30.62-152.38 30.62-70.94 84.17-124.5 53.56-53.55 124.95-84.17 71.39-30.62 152.85-30.62 81.45 0 152.38 30.62 70.94 30.62 124.5 84.17 53.55 53.56 84.17 124.72 30.62 71.16 30.62 152.34 0 81.19-30.62 152.62-30.62 71.44-84.17 125-53.56 53.55-124.72 84.17-71.16 30.62-152.34 30.62Z"/></svg>
+                                    </span>
+                                    {{ task.content }}
+                                </span>
+                                <div class="">
+
+                                    <!-- Check icon -->
+                                    <!-- Jinja integrates 'task.id' to the URL using 'double keys' -->
+                                    <a href="/task-complete/{{task.id}}" style="text-decoration:none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#62c462"><path d="M480-87.87q-80.91 0-152.35-30.6-71.43-30.6-125.01-84.17-53.57-53.58-84.17-125.01-30.6-71.44-30.6-152.35 0-81.91 30.6-152.85 30.6-70.93 84.17-124.51 53.58-53.57 125.01-84.17 71.44-30.6 152.35-30.6 45.61 0 90.32 10.42 44.7 10.43 85.27 31.51 15.91 8 19.63 24.16 3.71 16.15-6.24 31.06-9.96 15.15-27.35 19.11-17.39 3.96-33.78-4.04-29.13-14.61-61.78-21.92-32.66-7.3-66.07-7.3-128.8 0-218.97 90.04-90.16 90.05-90.16 219.09 0 129.04 90.16 219.09Q351.2-170.87 480-170.87q128.57 0 218.85-89.92 90.28-89.93 90.28-218.25 0-9.09-.38-19.3-.38-10.2-2.14-19.29-1.52-17.63 7.41-32.19 8.94-14.55 25.09-19.03 17.39-4.24 32.06 5.7 14.68 9.93 16.68 27.32 1.76 13.33 3.02 27.54 1.26 14.2 1.26 28.29 0 80.91-30.6 152.35-30.6 71.43-84.17 125.01-53.58 53.57-124.51 84.17-70.94 30.6-152.85 30.6Zm-54.72-330.5 360.81-360.8q12.43-12.44 28.96-12.32 16.54.12 28.73 12.32 12.44 12.43 12.44 28.84 0 16.42-12.44 28.85l-390.43 390.2q-12.68 12.67-29.07 12.67t-29.06-12.67L288.8-437.7q-12.43-12.43-12.43-29.22 0-16.8 12.43-29.23 12.44-12.44 29.35-12.44 16.92 0 29.35 12.44l77.78 77.78Z"/></svg>
+                                    </a>
+
+                                    <!-- Edit icon -->
+                                    <a href="/update-task/{{task.id}}" style="text-decoration:none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5bc0de"><path d="M177.55-135.87q-17.33 0-29.51-11.97-12.17-11.97-12.17-29.35v-92.11q0-16.48 5.84-31.52 5.83-15.03 18.51-27.7l473.17-473.41q11.48-11.72 25.03-16.96 13.56-5.24 28.44-5.24 14.64 0 28.36 5.24 13.71 5.24 25.67 16.72l61.28 60.56q11.48 11.72 16.84 25.56 5.36 13.83 5.36 28.33 0 15.16-5.38 29.09t-16.82 25.24L329-160.22q-12.67 12.68-27.66 18.51-14.98 5.84-31.42 5.84h-92.37ZM687.74-636.5l51-50.76-51.24-51.48-51.24 51 51.48 51.24Z"/></svg>
+                                    </a>
+
+                                    <!-- Delete icon -->
+                                    <a href="/delete-task/{{task.id}}" style="text-decoration:none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#fd7e14"><path d="M309.37-135.87q-34.48 0-58.74-24.26-24.26-24.26-24.26-58.74v-474.5h-12q-17.45 0-29.48-11.96-12.02-11.97-12.02-29.33t12.02-29.54q12.03-12.17 29.48-12.17H378.5v-12q0-17.45 12.02-29.48 12.03-12.02 29.48-12.02h119.52q17.45 0 29.48 12.02 12.02 12.03 12.02 29.48v12h164.61q17.45 0 29.48 11.96 12.02 11.97 12.02 29.33t-12.02 29.54q-12.03 12.17-29.48 12.17h-12v474.07q0 35.21-24.26 59.32t-58.74 24.11H309.37Zm108.98-152.37q16.17 0 27.51-11.19 11.34-11.18 11.34-27.44v-258.74q0-16.26-11.13-27.44-11.13-11.19-27.29-11.19-16.17 0-27.63 11.19-11.45 11.18-11.45 27.44v258.74q0 16.26 11.24 27.44 11.25 11.19 27.41 11.19Zm123.11 0q16.17 0 27.51-11.19 11.33-11.18 11.33-27.44v-258.74q0-16.26-11.12-27.44-11.13-11.19-27.3-11.19-16.16 0-27.62 11.19-11.46 11.18-11.46 27.44v258.74q0 16.26 11.25 27.44 11.25 11.19 27.41 11.19Z"/></svg>
+                                    </a>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="text-center ubuntu-light footer_style">
+
+        <div class="divider"></div>
+        <!-- It is possible to use different styles in a same text using <b> to make bold text or <span> to apply different colors -->
+        <div class="footer_div">
+            <p>Gestor de tareas por: <b>Joan Pastor Vicéns</b> | <span class="text-warning"><b>2024</b></span></p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,142 @@
+
+/* If something has changed and you don't see it, try to reload the page pressing 'Ctrl + Shift + R' on Chrome.
+ That avoids memory cache from navigator */
+
+/* >>> MARGIN: Defines the distance between screen margin and the web content */
+/* >>> PADDING: Defines the distance between web elements */
+/* >>> REM: Relative size compared with the root element */
+
+/* GENERAL SETTINGS */
+body {
+    background: #272b30;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #3F454E, #272b30);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #3F454E, #272b30) fixed; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* SPECIFIC SETTINGS */
+/* >>> Google Font */
+.ubuntu-light {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ubuntu-regular {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ubuntu-medium {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ubuntu-bold {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.ubuntu-light-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.ubuntu-regular-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.ubuntu-medium-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ubuntu-bold-italic {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* OWN SETTINGS */
+.center-position {
+    margin: auto;   /* Let the margin choose its size */
+}
+
+/* Specifies the card total size */
+.card_style {
+    min-width: 15rem;
+    max-width: 20rem;
+}
+
+/* Helps to set de margin */
+.more_margin {
+    margin-bottom:0.5rem
+}
+
+/* Sets the dropdown style (categories) */
+.dropdown_style {
+    width: 100%;
+    padding:0.35rem;
+    border-radius: 5px 5px 5px 5px
+}
+
+/* Helps to set the button to the right */
+.button_style {
+    position:absolute;
+    right:0
+}
+
+/* Creates a colored line to separate elements */
+.divider {
+    background: #3F454E;
+    width:100%;
+    height: 0.2rem
+}
+
+/* Sets the footer position to the page bottom */
+.footer_style {
+    position:fixed;  /* Forces the position to the given value. In that case 0 */
+    bottom:0;
+    width:100%;
+    height:3.2rem;
+    background: #1c1e22
+}
+
+/* Aligns all elements to the center */
+.footer_div {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3rem
+}
+
+/* Hides task content if its size is greater than 10rem */
+.task_display {
+    display:inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10rem;
+}
+
+/* Updates font style when the task is complete */
+.task_complete {
+    display:inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10rem;
+    text-decoration: line-through;
+    color: #1c1e22
+}
+
+.red_color {
+    fill: #ee5f5b
+}
